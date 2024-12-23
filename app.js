@@ -8,7 +8,7 @@ function addEntry() {
 
     if (entryDate) {
         let formattedDate = new Date(entryDate);
-        formattedDate.setDate(formattedDate.getDate() + 1); // Correct date to avoid the day-off issue
+        formattedDate.setDate(formattedDate.getDate() + 1); // Correct date to fix off-by-one issue
 
         if (entryType === "homework") {
             homeworkDates.push(formattedDate);
@@ -18,6 +18,11 @@ function addEntry() {
             updateTestDateList();
             predictNextTestDate();
         }
+
+        // Clear the date input field after adding the entry
+        entryDateInput.value = "";
+    } else {
+        alert("Please select a date!");
     }
 }
 
@@ -58,7 +63,7 @@ function predictNextTestDate() {
     let averageInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
     let lastTestDate = testDates[testDates.length - 1];
     let nextTestDate = new Date(lastTestDate);
-    nextTestDate.setDate(lastTestDate.getDate() + averageInterval);
+    nextTestDate.setDate(lastTestDate.getDate() + Math.round(averageInterval));
     
     document.getElementById("predictedTestDate").textContent = nextTestDate.toDateString();
 }
