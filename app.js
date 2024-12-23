@@ -1,13 +1,10 @@
-let testDates = [];
 
 function addTestDate() {
-    let testDateInput = document.getElementById("testDate").value;
+    let testDateInput = document.getElementById("testDate");
+    let testDate = testDateInput.value;
 
-    if (testDateInput) {
-        // Parse the input date in local time
-        let [year, month, day] = testDateInput.split("-");
-        let testDate = new Date(year, month - 1, day); // Month is zero-indexed in JavaScript
-        testDates.push(testDate);
+    if (testDate) {
+        testDates.push(new Date(testDate));
         updateTestDateList();
         predictNextTestDate();
     }
@@ -40,6 +37,7 @@ function predictNextTestDate() {
     let lastTestDate = testDates[testDates.length - 1];
     let nextTestDate = new Date(lastTestDate);
     nextTestDate.setDate(lastTestDate.getDate() + averageInterval);
-
+    
     document.getElementById("predictedTestDate").textContent = nextTestDate.toDateString();
 }
+
