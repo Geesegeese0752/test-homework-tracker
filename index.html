@@ -3,33 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Date Tracker</title>
+    <title>Homework and Test Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Test Date Tracker</h1>
-    <label for="testDate">Enter Test Date:</label>
-    <input type="date" id="testDate">
-    <button onclick="trackTestDate()">Submit</button>
-
-    <div id="result"></div>
-
+    <div class="container">
+        <h1>Homework and Test Tracker</h1>
+        <div class="section">
+            <h2>Add a New Date</h2>
+            <label for="type">Type:</label>
+            <select id="type">
+                <option value="Homework">Homework</option>
+                <option value="Test">Test</option>
+            </select>
+            <label for="date">Date:</label>
+            <input type="date" id="date">
+            <button onclick="addDate()">Add Date</button>
+        </div>
+        <div class="section">
+            <h2>Recorded Dates</h2>
+            <ul id="datesList"></ul>
+        </div>
+        <div class="section">
+            <h2>Test Date Prediction</h2>
+            <button onclick="predictTestDate()">Predict Next Test Date</button>
+            <p id="prediction"></p>
+        </div>
+    </div>
     <script>
-        function trackTestDate() {
-            let dateInput = document.getElementById("testDate").value;
-            let testDate = new Date(dateInput);
+        const dates = [];
 
-            // Adjust the date based on the user's local time zone
-            testDate.setMinutes(testDate.getMinutes() + testDate.getTimezoneOffset());
+        function addDate() {
+            const type = document.getElementById("type").value;
+            const dateInput = document.getElementById("date").value;
 
-            // Format the date for display
-            let formattedDate = testDate.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
+            if (!dateInput) {
+                alert("Please select a date.");
+                return;
+            }
+
+            const date = new Date(dateInput);
+            dates.push({ type, date });
+            updateDatesList();
+        }
+
+        function updateDatesList() {
+            const list = document.getElementById("datesList");
+            list.innerHTML = "";
+            dates.forEach((entry, index) => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `${entry.type}: ${entry.date.toDateString()}`;
+                list.appendChild(listItem);
             });
+        }
 
-            // Display the result
-            document.getElementById("result").innerText = `Test date: ${formattedDate}`;
+        function predictTestDate() {
+            const testDates = dates
+                .filter(entry => entry.type === "Test")
+                .map(entry => entry.date)
+                .sort((a, b) => a - b);
+
+            if (testDates.length < 2) {
+                document.getElementById("prediction").textContent = 
+                    "Not enough test dates recorded to make a prediction.";
+                return;
+            }
+
+            let totalDifference = 0;
+            for (let i = 1; i < testDates.length; i++) {
+                totalDifference += (testDates[i] - testDates[i - 1]);
+            }
+
+            const averageDifference = totalDifference / (testDates.length - 1);
+            const lastTestDate = testDates[testDates.length - 1];
+            const predictedDate = new Date(lastTestDate.getTime() + averageDifference);
+
+            document.getElementById("prediction").textContent = 
+                `The next test date might be around: ${predictedDate.toDateString()}`;
         }
     </script>
 </body>
