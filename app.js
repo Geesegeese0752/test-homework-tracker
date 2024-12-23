@@ -1,56 +1,45 @@
-// Array to store test dates
-const testDates = [];
+let testDates = [];
 
-// Function to add a test date
 function addTestDate() {
-    const testDateInput = document.getElementById("testDate").value;
+    let testDateInput = document.getElementById("testDate").value;
 
-    if (!testDateInput) {
-        alert("Please select a date.");
-        return;
+    if (testDateInput) {
+        // Parse the input date in local time
+        let [year, month, day] = testDateInput.split("-");
+        let testDate = new Date(year, month - 1, day); // Month is zero-indexed in JavaScript
+        testDates.push(testDate);
+        updateTestDateList();
+        predictNextTestDate();
     }
-
-    // Correctly parse the input date in local time
-    const [year, month, day] = testDateInput.split("-");
-    const testDate = new Date(year, month - 1, day); // Month is zero-indexed in JavaScript
-    testDates.push(testDate);
-
-    updateTestDateList();
-    predictNextTestDate();
 }
 
-// Function to update the displayed list of test dates
 function updateTestDateList() {
-    const testDateList = document.getElementById("testDateList");
+    let testDateList = document.getElementById("testDateList");
     testDateList.innerHTML = "";
 
-    testDates.forEach(date => {
-        const listItem = document.createElement("li");
-        listItem.textContent = date.toDateString();
-        testDateList.appendChild(listItem);
+    testDates.forEach((date) => {
+        let li = document.createElement("li");
+        li.textContent = date.toDateString();
+        testDateList.appendChild(li);
     });
 }
 
-// Function to predict the next test date
 function predictNextTestDate() {
     if (testDates.length < 2) {
-        document.getElementById("predictedTestDate").textContent =
-            "Not enough test dates to predict the next one.";
+        document.getElementById("predictedTestDate").textContent = "Not enough data to predict.";
         return;
     }
 
-    // Sort dates and calculate average interval
-    const sortedDates = testDates.sort((a, b) => a - b);
-    let totalInterval = 0;
-
-    for (let i = 1; i < sortedDates.length; i++) {
-        totalInterval += (sortedDates[i] - sortedDates[i - 1]);
+    let intervals = [];
+    for (let i = 1; i < testDates.length; i++) {
+        let diff = (testDates[i] - testDates[i - 1]) / (1000 * 3600 * 24); // days difference
+        intervals.push(diff);
     }
 
-    const averageInterval = totalInterval / (sortedDates.length - 1);
-    const lastTestDate = sortedDates[sortedDates.length - 1];
-    const predictedDate = new Date(lastTestDate.getTime() + averageInterval);
+    let averageInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+    let lastTestDate = testDates[testDates.length - 1];
+    let nextTestDate = new Date(lastTestDate);
+    nextTestDate.setDate(lastTestDate.getDate() + averageInterval);
 
-    document.getElementById("predictedTestDate").textContent =
-        `The next test date might be around: ${predictedDate.toDateString()}`;
+    document.getElementById("predictedTestDate").textContent = nextTestDate.toDateString();
 }
