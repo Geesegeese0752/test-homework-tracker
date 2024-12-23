@@ -1,55 +1,24 @@
-// Array to store test dates
-const testDates = [];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework and Test Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Homework and Test Tracker</h1>
 
-// Function to add a test date
-function addTestDate() {
-    const testDateInput = document.getElementById("testDate").value;
+    <h3>Enter Your Test Dates:</h3>
+    <input type="date" id="testDate">
+    <button onclick="addTestDate()">Add Test Date</button>
 
-    if (!testDateInput) {
-        alert("Please select a date.");
-        return;
-    }
+    <h3>Your Test Dates:</h3>
+    <ul id="testDateList"></ul>
 
-    // Ensure the date is correctly recorded
-    const testDate = new Date(testDateInput + "T00:00:00");
-    testDates.push(testDate);
+    <h3>Predicted Next Test Date:</h3>
+    <p id="predictedTestDate"></p>
 
-    updateTestDateList();
-    predictNextTestDate();
-}
-
-// Function to update the displayed list of test dates
-function updateTestDateList() {
-    const testDateList = document.getElementById("testDateList");
-    testDateList.innerHTML = "";
-
-    testDates.forEach(date => {
-        const listItem = document.createElement("li");
-        listItem.textContent = date.toDateString();
-        testDateList.appendChild(listItem);
-    });
-}
-
-// Function to predict the next test date
-function predictNextTestDate() {
-    if (testDates.length < 2) {
-        document.getElementById("predictedTestDate").textContent =
-            "Not enough test dates to predict the next one.";
-        return;
-    }
-
-    // Sort dates and calculate average interval
-    const sortedDates = testDates.sort((a, b) => a - b);
-    let totalInterval = 0;
-
-    for (let i = 1; i < sortedDates.length; i++) {
-        totalInterval += (sortedDates[i] - sortedDates[i - 1]);
-    }
-
-    const averageInterval = totalInterval / (sortedDates.length - 1);
-    const lastTestDate = sortedDates[sortedDates.length - 1];
-    const predictedDate = new Date(lastTestDate.getTime() + averageInterval);
-
-    document.getElementById("predictedTestDate").textContent =
-        `The next test date might be around: ${predictedDate.toDateString()}`;
-}
+    <script src="app.js"></script>
+</body>
+</html>
