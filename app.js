@@ -1,16 +1,35 @@
+let homeworkDates = [];
 let testDates = [];
 
-function addTestDate() {
-    let testDateInput = document.getElementById("testDate");
-    let testDate = testDateInput.value;
+function addEntry() {
+    let entryType = document.getElementById("entryType").value;
+    let entryDateInput = document.getElementById("entryDate");
+    let entryDate = entryDateInput.value;
 
-    if (testDate) {
-        let formattedDate = new Date(testDate);
+    if (entryDate) {
+        let formattedDate = new Date(entryDate);
         formattedDate.setDate(formattedDate.getDate() + 1); // Correct date to avoid the day-off issue
-        testDates.push(formattedDate);
-        updateTestDateList();
-        predictNextTestDate();
+
+        if (entryType === "homework") {
+            homeworkDates.push(formattedDate);
+            updateHomeworkList();
+        } else if (entryType === "test") {
+            testDates.push(formattedDate);
+            updateTestDateList();
+            predictNextTestDate();
+        }
     }
+}
+
+function updateHomeworkList() {
+    let homeworkList = document.getElementById("homeworkList");
+    homeworkList.innerHTML = "";
+
+    homeworkDates.forEach((date) => {
+        let li = document.createElement("li");
+        li.textContent = date.toDateString();
+        homeworkList.appendChild(li);
+    });
 }
 
 function updateTestDateList() {
