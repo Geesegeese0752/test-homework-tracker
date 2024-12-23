@@ -1,10 +1,12 @@
+let testDates = [];
 
 function addTestDate() {
-    let testDateInput = document.getElementById("testDate");
-    let testDate = testDateInput.value;
+    let testDateInput = document.getElementById("testDate").value;
 
-    if (testDate) {
-        testDates.push(new Date(testDate));
+    if (testDateInput) {
+        // Convert input directly to a Date object
+        let testDate = new Date(testDateInput + "T00:00"); // Force midnight in local time
+        testDates.push(testDate);
         updateTestDateList();
         predictNextTestDate();
     }
@@ -36,8 +38,7 @@ function predictNextTestDate() {
     let averageInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
     let lastTestDate = testDates[testDates.length - 1];
     let nextTestDate = new Date(lastTestDate);
-    nextTestDate.setDate(lastTestDate.getDate() + averageInterval);
-    
+    nextTestDate.setDate(lastTestDate.getDate() + Math.round(averageInterval));
+
     document.getElementById("predictedTestDate").textContent = nextTestDate.toDateString();
 }
-
