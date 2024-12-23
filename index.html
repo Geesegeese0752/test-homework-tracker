@@ -9,9 +9,17 @@
 <body>
     <h1>Homework and Test Tracker</h1>
 
-    <h3>Enter Your Test Dates:</h3>
-    <input type="date" id="testDate">
-    <button onclick="addTestDate()">Add Test Date</button>
+    <h3>Enter a Date:</h3>
+    <label for="entryType">Choose Entry Type:</label>
+    <select id="entryType">
+        <option value="homework">Homework</option>
+        <option value="test">Test</option>
+    </select>
+    <input type="date" id="entryDate">
+    <button onclick="addEntry()">Add Entry</button>
+
+    <h3>Your Homework Dates:</h3>
+    <ul id="homeworkList"></ul>
 
     <h3>Your Test Dates:</h3>
     <ul id="testDateList"></ul>
