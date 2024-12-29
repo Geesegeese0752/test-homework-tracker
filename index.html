@@ -9,20 +9,28 @@
 <body>
     <h1>Homework and Test Tracker</h1>
 
-    <h3>Enter a Date:</h3>
-    <label for="entryType">Choose Entry Type:</label>
-    <select id="entryType">
-        <option value="homework">Homework</option>
-        <option value="test">Test</option>
+    <h3>Select or Add a Subject:</h3>
+    <select id="subjectSelect">
+        <option value="">Select a subject</option>
     </select>
-    <input type="date" id="entryDate">
-    <button onclick="addEntry()">Add Entry</button>
+    <input type="text" id="newSubject" placeholder="Add new subject">
+    <button onclick="addSubject()">Add Subject</button>
 
-    <h3>Your Homework Dates:</h3>
-    <ul id="homeworkList"></ul>
+    <h3>Enter Dates:</h3>
+    <input type="date" id="dateInput">
+    <select id="dateType">
+        <option value="test">Test Date</option>
+        <option value="homework">Homework Date</option>
+    </select>
+    <button onclick="addDate()">Add Date</button>
 
-    <h3>Your Test Dates:</h3>
-    <ul id="testDateList"></ul>
+    <h3>Dates for <span id="currentSubject">[No Subject Selected]</span>:</h3>
+    <div id="datesList">
+        <h4>Test Dates:</h4>
+        <ul id="testDateList"></ul>
+        <h4>Homework Dates:</h4>
+        <ul id="homeworkDateList"></ul>
+    </div>
 
     <h3>Predicted Next Test Date:</h3>
     <p id="predictedTestDate"></p>
