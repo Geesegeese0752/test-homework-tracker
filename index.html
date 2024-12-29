@@ -3,37 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homework and Test Tracker</title>
+    <title>School Homework & Test Tracker</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Homework and Test Tracker</h1>
+    <h1>School Homework & Test Tracker</h1>
 
-    <h3>Select or Add a Subject:</h3>
-    <select id="subjectSelect">
-        <option value="">Select a subject</option>
-    </select>
-    <input type="text" id="newSubject" placeholder="Add new subject">
-    <button onclick="addSubject()">Add Subject</button>
+    <section>
+        <h3>Add a New Subject</h3>
+        <input type="text" id="newSubject" placeholder="Enter subject name">
+        <button onclick="addSubject()">Add Subject</button>
+    </section>
 
-    <h3>Enter Dates:</h3>
-    <input type="date" id="dateInput">
-    <select id="dateType">
-        <option value="test">Test Date</option>
-        <option value="homework">Homework Date</option>
-    </select>
-    <button onclick="addDate()">Add Date</button>
+    <section>
+        <h3>Select a Subject</h3>
+        <label for="subjectSelect">Subjects:</label>
+        <select id="subjectSelect">
+            <option value="">Select a subject</option>
+        </select>
+    </section>
 
-    <h3>Dates for <span id="currentSubject">[No Subject Selected]</span>:</h3>
-    <div id="datesList">
-        <h4>Test Dates:</h4>
-        <ul id="testDateList"></ul>
-        <h4>Homework Dates:</h4>
-        <ul id="homeworkDateList"></ul>
-    </div>
+    <section>
+        <h3>Manage Dates for Selected Subject</h3>
+        <label for="dateType">Choose Date Type:</label>
+        <select id="dateType">
+            <option value="test">Test Date</option>
+            <option value="homework">Homework Date</option>
+        </select>
+        <input type="date" id="dateInput">
+        <button onclick="addDate()">Add Date</button>
 
-    <h3>Predicted Next Test Date:</h3>
-    <p id="predictedTestDate"></p>
+        <h4>Recorded Dates:</h4>
+        <ul id="dateList"></ul>
+    </section>
+
+    <section>
+        <h3>Predicted Next Test Date</h3>
+        <p id="predictedTestDate">Not enough data to predict.</p>
+    </section>
+
+    <footer>
+        <p>Designed for Students | Track your success!</p>
+    </footer>
 
     <script src="app.js"></script>
 </body>
