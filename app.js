@@ -1,4 +1,4 @@
-let subjects = {}; // Object to store subjects with their homework and tests
+let subjects = {}; // Object to hold subjects with their tasks
 
 // Function to add a new subject to the subject list
 function addSubject() {
@@ -7,30 +7,28 @@ function addSubject() {
 
     if (subjectName !== '') {
         if (!subjects[subjectName]) {
-            // Initialize the subject with empty arrays for homework and tests
-            subjects[subjectName] = { homework: [], tests: [] };
+            // Initialize the subject with empty arrays for tests and homework
+            subjects[subjectName] = { tests: [], homework: [] };
             
-            // Update the subject dropdown (select)
+            // Update the subject dropdown
             const subjectSelect = document.getElementById('subjectSelector');
             const newOption = document.createElement('option');
             newOption.value = subjectName;
             newOption.textContent = subjectName;
             subjectSelect.appendChild(newOption);
 
-            // Clear the input field
-            subjectInput.value = '';
-
-            // Update the subject overview list
+            // Update the subjects list with the new subject
             renderSubjectsList();
+            subjectInput.value = ''; // Clear the input
         } else {
-            alert('This subject already exists.');
+            alert('Subject already exists.');
         }
     } else {
-        alert('Please enter a subject name.');
+        alert('Please enter a subject name');
     }
 }
 
-// Function to add a homework or test task to the selected subject
+// Function to add a task (homework/test) to the selected subject
 function addTask() {
     const subjectSelect = document.getElementById('subjectSelector');
     const taskName = document.getElementById('taskName').value.trim();
@@ -40,7 +38,7 @@ function addTask() {
     const selectedSubject = subjectSelect.value;
 
     if (selectedSubject && taskName !== '' && taskDate !== '') {
-        const task = { name: taskName, date: new Date(taskDate).toDateString() };
+        const task = { name: taskName, date: new Date(taskDate).toDateString(), rawDate: new Date(taskDate) };
 
         // Add the task to the appropriate subject (homework or test)
         if (taskType === 'homework') {
@@ -49,22 +47,22 @@ function addTask() {
             subjects[selectedSubject].tests.push(task);
         }
 
+        // Update the subject's task list and render the overview
+        renderSubjectsList();
+
         // Clear the input fields
         document.getElementById('taskName').value = '';
         document.getElementById('taskDate').value = '';
         document.getElementById('taskType').value = 'homework';
-
-        // Update the subject overview list
-        renderSubjectsList();
     } else {
         alert('Please fill in all fields.');
     }
 }
 
-// Function to render the list of subjects with their tasks (homework and tests)
+// Function to render the list of subjects with their tasks
 function renderSubjectsList() {
     const subjectsListContainer = document.getElementById('subjectsList');
-    subjectsListContainer.innerHTML = ''; // Clear the current list
+    subjectsListContainer.innerHTML = ''; // Clear existing list
 
     // Loop through each subject and display their homework and tests
     for (const subject in subjects) {
@@ -77,25 +75,43 @@ function renderSubjectsList() {
 
         const taskList = document.createElement('div');
         
-        // Display Homework Dates
+        // Display Homework
         if (subjects[subject].homework.length > 0) {
             const homeworkList = document.createElement('ul');
-            homeworkList.innerHTML = '<strong>Homework Dates:</strong>';
+            homeworkList.innerHTML = '<strong>Homework:</strong>';
             subjects[subject].homework.forEach(task => {
                 const li = document.createElement('li');
-                li.textContent = `${task.name} - Due: ${task.date}`;
+                const taskDate = new Date(task.rawDate);
+                const currentDate = new Date();
+
+                // Check if the task date is in the past (overdue)
+                if (taskDate < currentDate) {
+                    li.style.textDecoration = 'line-through';  // Strike-through overdue tasks
+                    li.style.color = 'gray';  // Make overdue tasks appear gray
+                }
+
+                li.textContent = `${task.name} - ${task.date}`;
                 homeworkList.appendChild(li);
             });
             taskList.appendChild(homeworkList);
         }
 
-        // Display Test Dates
+        // Display Tests
         if (subjects[subject].tests.length > 0) {
             const testList = document.createElement('ul');
-            testList.innerHTML = '<strong>Test Dates:</strong>';
+            testList.innerHTML = '<strong>Tests:</strong>';
             subjects[subject].tests.forEach(task => {
                 const li = document.createElement('li');
-                li.textContent = `${task.name} - Test Date: ${task.date}`;
+                const taskDate = new Date(task.rawDate);
+                const currentDate = new Date();
+
+                // Check if the task date is in the past (overdue)
+                if (taskDate < currentDate) {
+                    li.style.textDecoration = 'line-through';  // Strike-through overdue tasks
+                    li.style.color = 'gray';  // Make overdue tasks appear gray
+                }
+
+                li.textContent = `${task.name} - ${task.date}`;
                 testList.appendChild(li);
             });
             taskList.appendChild(testList);
