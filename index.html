@@ -10,12 +10,14 @@
     <div class="blackboard">
         <h1>School Homework & Test Tracker</h1>
 
+        <!-- Add Subject Section -->
         <div class="form-section">
             <h3>Add Subject</h3>
             <input type="text" id="subjectInput" placeholder="Enter subject name">
             <button onclick="addSubject()">Add Subject</button>
         </div>
 
+        <!-- Add Task Section -->
         <div class="form-section">
             <h3>Add Homework or Test</h3>
             <select id="subjectSelector">
@@ -30,9 +32,10 @@
             <button onclick="addTask()">Add Task</button>
         </div>
 
+        <!-- Subjects Overview Section -->
         <div id="subjectsContainer">
             <h2>Subjects Overview</h2>
-            <div id="subjectsList"></div> <!-- This is where the subjects list will appear -->
+            <div id="subjectsList"></div> <!-- This will hold the list of subjects and their tasks -->
         </div>
 
         <div id="reminders">
