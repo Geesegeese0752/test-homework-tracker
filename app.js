@@ -5,7 +5,7 @@ function addSubject() {
     const subjectName = newSubjectInput.value.trim();
 
     if (!subjectName) {
-        alert("Subject name cannot be empty.");
+        alert("Please enter a subject name.");
         return;
     }
 
@@ -15,9 +15,9 @@ function addSubject() {
     }
 
     subjects[subjectName] = { tests: [], homework: [] };
-    updateSubjectList();
     newSubjectInput.value = "";
-    alert(`Subject "${subjectName}" added successfully!`);
+    updateSubjectList();
+    renderTaskList();
 }
 
 function updateSubjectList() {
@@ -30,8 +30,6 @@ function updateSubjectList() {
         option.textContent = subject;
         subjectSelect.appendChild(option);
     }
-
-    renderTaskList();
 }
 
 function addTask() {
@@ -46,20 +44,20 @@ function addTask() {
     }
 
     if (!taskName || !taskDate) {
-        alert("Task name and date cannot be empty.");
+        alert("Please provide both task name and date.");
         return;
     }
 
-    const task = { name: taskName, date: new Date(taskDate) };
+    const task = { name: taskName, date: new Date(taskDate).toDateString() };
 
     if (taskType === "test") {
         subjects[selectedSubject].tests.push(task);
-    } else if (taskType === "homework") {
+    } else {
         subjects[selectedSubject].homework.push(task);
     }
 
     renderTaskList();
-    alert(`${taskType === "test" ? "Test" : "Homework"} added successfully to "${selectedSubject}".`);
+    alert(`Added ${taskType} to ${selectedSubject}.`);
 }
 
 function renderTaskList() {
@@ -67,18 +65,18 @@ function renderTaskList() {
     taskListContainer.innerHTML = "";
 
     for (const subject in subjects) {
-        const subjectSection = document.createElement("div");
-        subjectSection.className = "subject-section";
+        const subjectDiv = document.createElement("div");
+        subjectDiv.classList.add("subject");
 
-        const subjectTitle = document.createElement("h4");
-        subjectTitle.textContent = subject;
-        subjectSection.appendChild(subjectTitle);
+        const subjectHeader = document.createElement("h4");
+        subjectHeader.textContent = subject;
+        subjectDiv.appendChild(subjectHeader);
 
         const testList = document.createElement("ul");
         testList.innerHTML = "<strong>Tests:</strong>";
         subjects[subject].tests.forEach((test) => {
             const li = document.createElement("li");
-            li.textContent = `${test.name} - ${test.date.toDateString()}`;
+            li.textContent = `${test.name} - ${test.date}`;
             testList.appendChild(li);
         });
 
@@ -86,12 +84,12 @@ function renderTaskList() {
         homeworkList.innerHTML = "<strong>Homework:</strong>";
         subjects[subject].homework.forEach((homework) => {
             const li = document.createElement("li");
-            li.textContent = `${homework.name} - ${homework.date.toDateString()}`;
+            li.textContent = `${homework.name} - ${homework.date}`;
             homeworkList.appendChild(li);
         });
 
-        subjectSection.appendChild(testList);
-        subjectSection.appendChild(homeworkList);
-        taskListContainer.appendChild(subjectSection);
+        subjectDiv.appendChild(testList);
+        subjectDiv.appendChild(homeworkList);
+        taskListContainer.appendChild(subjectDiv);
     }
 }
