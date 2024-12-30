@@ -77,25 +77,25 @@ function renderSubjectsList() {
 
         const taskList = document.createElement('div');
         
-        // Display Homework
+        // Display Homework Dates
         if (subjects[subject].homework.length > 0) {
             const homeworkList = document.createElement('ul');
-            homeworkList.innerHTML = '<strong>Homework:</strong>';
+            homeworkList.innerHTML = '<strong>Homework Dates:</strong>';
             subjects[subject].homework.forEach(task => {
                 const li = document.createElement('li');
-                li.textContent = `${task.name} - ${task.date}`;
+                li.textContent = `${task.name} - Due: ${task.date}`;
                 homeworkList.appendChild(li);
             });
             taskList.appendChild(homeworkList);
         }
 
-        // Display Tests
+        // Display Test Dates
         if (subjects[subject].tests.length > 0) {
             const testList = document.createElement('ul');
-            testList.innerHTML = '<strong>Tests:</strong>';
+            testList.innerHTML = '<strong>Test Dates:</strong>';
             subjects[subject].tests.forEach(task => {
                 const li = document.createElement('li');
-                li.textContent = `${task.name} - ${task.date}`;
+                li.textContent = `${task.name} - Test Date: ${task.date}`;
                 testList.appendChild(li);
             });
             taskList.appendChild(testList);
