@@ -12,13 +12,13 @@
 
         <div class="form-section">
             <h3>Add Subject</h3>
-            <input type="text" id="newSubject" placeholder="Enter subject name">
+            <input type="text" id="subjectInput" placeholder="Enter subject name">
             <button onclick="addSubject()">Add Subject</button>
         </div>
 
         <div class="form-section">
             <h3>Add Homework or Test</h3>
-            <select id="subjectSelect">
+            <select id="subjectSelector">
                 <option value="">Select Subject</option>
             </select>
             <input type="text" id="taskName" placeholder="Task name (e.g., Chapter 5 Homework)">
@@ -27,12 +27,12 @@
                 <option value="homework">Homework</option>
                 <option value="test">Test</option>
             </select>
-            <button class="add-task" onclick="addTask()">Add Task</button>
+            <button onclick="addTask()">Add Task</button>
         </div>
 
         <div id="subjectsContainer">
             <h2>Subjects Overview</h2>
-            <div id="subjectsList"></div>
+            <div id="subjectsList"></div> <!-- This is where the subjects list will appear -->
         </div>
 
         <div id="reminders">
