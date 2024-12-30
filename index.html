@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Homework & Test Tracker</title>
+    <title>School Task Organizer</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>School Homework & Test Tracker</h1>
+    <h1>School Task Organizer</h1>
 
     <section>
         <h3>Add a New Subject</h3>
@@ -24,32 +24,25 @@
     </section>
 
     <section>
-        <h3>Manage Dates for Selected Subject</h3>
-        <label for="dateType">Choose Date Type:</label>
-        <select id="dateType">
+        <h3>Manage Tasks for Selected Subject</h3>
+        <label for="taskType">Task Type:</label>
+        <select id="taskType">
             <option value="test">Test</option>
             <option value="homework">Homework</option>
         </select>
 
-        <div id="homeworkNameField" style="display: none;">
-            <input type="text" id="homeworkName" placeholder="Enter homework name">
-        </div>
-
-        <input type="date" id="dateInput">
-        <button onclick="addDate()">Add Date</button>
+        <input type="text" id="taskName" placeholder="Enter task name">
+        <input type="date" id="taskDate">
+        <button onclick="addTask()">Add Task</button>
     </section>
 
     <section>
-        <h3>Details for Selected Subject</h3>
-        <h4>Test Dates:</h4>
-        <ul id="testDateList"></ul>
-
-        <h4>Homework:</h4>
-        <ul id="homeworkList"></ul>
+        <h3>Organized Task List</h3>
+        <div id="taskListContainer"></div>
     </section>
 
     <footer>
-        <p>Designed for Students | Track your success!</p>
+        <p>Keep track of your schoolwork efficiently!</p>
     </footer>
 
     <script src="app.js"></script>
