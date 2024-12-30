@@ -14,7 +14,7 @@ function addSubject() {
         return;
     }
 
-    subjects[subjectName] = { testDates: [], homeworkDates: [] };
+    subjects[subjectName] = { tests: [], homework: [] };
     updateSubjectList();
     newSubjectInput.value = "";
     alert(`Subject "${subjectName}" added successfully!`);
@@ -48,42 +48,50 @@ function addDate() {
     }
 
     const date = new Date(dateInput);
-    subjects[selectedSubject][`${dateType}Dates`].push(date);
-    updateDateList(selectedSubject, dateType);
+
     if (dateType === "test") {
-        predictNextTestDate(selectedSubject);
+        subjects[selectedSubject].tests.push(date);
+        updateTestList(selectedSubject);
+    } else if (dateType === "homework") {
+        const homeworkName = document.getElementById("homeworkName").value.trim();
+
+        if (!homeworkName) {
+            alert("Please enter a homework name.");
+            return;
+        }
+
+        subjects[selectedSubject].homework.push({ name: homeworkName, date: date });
+        updateHomeworkList(selectedSubject);
     }
 }
 
-function updateDateList(subject, dateType) {
-    const dateList = document.getElementById("dateList");
-    dateList.innerHTML = "";
+function updateTestList(subject) {
+    const testDateList = document.getElementById("testDateList");
+    testDateList.innerHTML = "";
 
-    subjects[subject][`${dateType}Dates`].forEach((date) => {
+    subjects[subject].tests.forEach((testDate) => {
         const li = document.createElement("li");
-        li.textContent = `${dateType === "test" ? "Test" : "Homework"}: ${date.toDateString()}`;
-        dateList.appendChild(li);
+        li.textContent = testDate.toDateString();
+        testDateList.appendChild(li);
     });
 }
 
-function predictNextTestDate(subject) {
-    const testDates = subjects[subject].testDates;
+function updateHomeworkList(subject) {
+    const homeworkList = document.getElementById("homeworkList");
+    homeworkList.innerHTML = "";
 
-    if (testDates.length < 2) {
-        document.getElementById("predictedTestDate").textContent = "Not enough data to predict.";
-        return;
-    }
-
-    const intervals = [];
-    for (let i = 1; i < testDates.length; i++) {
-        const diff = (testDates[i] - testDates[i - 1]) / (1000 * 3600 * 24);
-        intervals.push(diff);
-    }
-
-    const averageInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-    const lastTestDate = testDates[testDates.length - 1];
-    const nextTestDate = new Date(lastTestDate);
-    nextTestDate.setDate(lastTestDate.getDate() + averageInterval);
-
-    document.getElementById("predictedTestDate").textContent = `Predicted: ${nextTestDate.toDateString()}`;
+    subjects[subject].homework.forEach((homework) => {
+        const li = document.createElement("li");
+        li.textContent = `${homework.name} - ${homework.date.toDateString()}`;
+        homeworkList.appendChild(li);
+    });
 }
+
+document.getElementById("dateType").addEventListener("change", (event) => {
+    const homeworkNameField = document.getElementById("homeworkNameField");
+    if (event.target.value === "homework") {
+        homeworkNameField.style.display = "block";
+    } else {
+        homeworkNameField.style.display = "none";
+    }
+});
