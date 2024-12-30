@@ -23,13 +23,13 @@ h1 {
 }
 
 /* Section Box Design */
-.form-section {
+section {
     margin: 20px auto;
     padding: 20px;
     width: 90%;
     max-width: 600px;
     border-radius: 10px;
-    background: rgba(0, 0, 0, 0.7); /* Blackboard overlay */
+    background: rgba(0, 0, 0, 0.8); /* Blackboard overlay */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
@@ -67,12 +67,10 @@ button {
     font-weight: bold;
     transition: all 0.3s ease;
     cursor: pointer;
-    padding: 12px;
 }
 
 button:hover {
     background-color: #2980b9;
-    transform: scale(1.05); /* Slight zoom effect on hover */
 }
 
 /* Subject Styling */
@@ -80,8 +78,8 @@ button:hover {
     background: rgba(243, 156, 18, 0.9); /* Notebook section */
     color: #2c3e50;
     margin-bottom: 20px;
-    padding: 20px;  /* Increased padding for better spacing */
-    border-radius: 10px;
+    padding: 15px;
+    border-radius: 8px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 }
 
@@ -112,6 +110,14 @@ ul li:hover {
     background-color: rgba(255, 255, 255, 0.4);
 }
 
+/* Footer */
+footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #bdc3c7;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     h1 {
@@ -121,56 +127,4 @@ ul li:hover {
     input, button, select {
         font-size: 0.9rem;
     }
-
-    /* Make the form inputs stretch across smaller screens */
-    .form-section input, .form-section select {
-        width: 100%;
-    }
-
-    .form-section {
-        padding: 15px;
-    }
-}
-
-/* Task List Styling */
-#subjectsContainer {
-    margin-top: 30px;
-    text-align: center;
-}
-
-#subjectsList {
-    padding: 0;
-    margin-top: 20px;
-}
-
-#subjectsList .subject {
-    margin-bottom: 15px;
-}
-
-/* Task Type Buttons */
-button.add-task {
-    background-color: #27ae60;
-    color: white;
-}
-
-button.add-task:hover {
-    background-color: #2ecc71;
-}
-
-/* Input field for task names */
-input#taskName {
-    width: calc(50% - 20px);
-    margin-right: 4%;
-    display: inline-block;
-}
-
-input#taskDate {
-    width: calc(48% - 20px);
-    display: inline-block;
-}
-
-input#taskType {
-    width: calc(50% - 20px);
-    display: inline-block;
-    margin-left: 4%;
 }
