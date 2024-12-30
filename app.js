@@ -6,20 +6,24 @@ function addSubject() {
     const subjectName = subjectInput.value.trim();
 
     if (subjectName !== '') {
+        // Check if the subject already exists to prevent duplicates
         if (!subjects[subjectName]) {
             // Initialize the subject with empty arrays for tests and homework
             subjects[subjectName] = { tests: [], homework: [] };
             
             // Update the subject dropdown
             const subjectSelect = document.getElementById('subjectSelector');
+            
+            // Create and append the new option element
             const newOption = document.createElement('option');
             newOption.value = subjectName;
             newOption.textContent = subjectName;
             subjectSelect.appendChild(newOption);
 
-            // Update the subjects list with the new subject
+            // Render the updated subjects list on the page
             renderSubjectsList();
-            subjectInput.value = ''; // Clear the input
+
+            subjectInput.value = ''; // Clear the input after adding
         } else {
             alert('Subject already exists.');
         }
@@ -52,7 +56,7 @@ function addTask() {
             subjects[selectedSubject].tests.push(task);
         }
 
-        // Update the subject's task list and render the overview
+        // Render the updated subjects list with the new task
         renderSubjectsList();
 
         // Clear the input fields
