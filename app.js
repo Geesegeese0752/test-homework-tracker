@@ -30,68 +30,68 @@ function updateSubjectList() {
         option.textContent = subject;
         subjectSelect.appendChild(option);
     }
+
+    renderTaskList();
 }
 
-function addDate() {
+function addTask() {
     const selectedSubject = document.getElementById("subjectSelect").value;
-    const dateType = document.getElementById("dateType").value;
-    const dateInput = document.getElementById("dateInput").value;
+    const taskType = document.getElementById("taskType").value;
+    const taskName = document.getElementById("taskName").value.trim();
+    const taskDate = document.getElementById("taskDate").value;
 
     if (!selectedSubject) {
         alert("Please select a subject.");
         return;
     }
 
-    if (!dateInput) {
-        alert("Please select a date.");
+    if (!taskName || !taskDate) {
+        alert("Task name and date cannot be empty.");
         return;
     }
 
-    const date = new Date(dateInput);
+    const task = { name: taskName, date: new Date(taskDate) };
 
-    if (dateType === "test") {
-        subjects[selectedSubject].tests.push(date);
-        updateTestList(selectedSubject);
-    } else if (dateType === "homework") {
-        const homeworkName = document.getElementById("homeworkName").value.trim();
+    if (taskType === "test") {
+        subjects[selectedSubject].tests.push(task);
+    } else if (taskType === "homework") {
+        subjects[selectedSubject].homework.push(task);
+    }
 
-        if (!homeworkName) {
-            alert("Please enter a homework name.");
-            return;
-        }
+    renderTaskList();
+    alert(`${taskType === "test" ? "Test" : "Homework"} added successfully to "${selectedSubject}".`);
+}
 
-        subjects[selectedSubject].homework.push({ name: homeworkName, date: date });
-        updateHomeworkList(selectedSubject);
+function renderTaskList() {
+    const taskListContainer = document.getElementById("taskListContainer");
+    taskListContainer.innerHTML = "";
+
+    for (const subject in subjects) {
+        const subjectSection = document.createElement("div");
+        subjectSection.className = "subject-section";
+
+        const subjectTitle = document.createElement("h4");
+        subjectTitle.textContent = subject;
+        subjectSection.appendChild(subjectTitle);
+
+        const testList = document.createElement("ul");
+        testList.innerHTML = "<strong>Tests:</strong>";
+        subjects[subject].tests.forEach((test) => {
+            const li = document.createElement("li");
+            li.textContent = `${test.name} - ${test.date.toDateString()}`;
+            testList.appendChild(li);
+        });
+
+        const homeworkList = document.createElement("ul");
+        homeworkList.innerHTML = "<strong>Homework:</strong>";
+        subjects[subject].homework.forEach((homework) => {
+            const li = document.createElement("li");
+            li.textContent = `${homework.name} - ${homework.date.toDateString()}`;
+            homeworkList.appendChild(li);
+        });
+
+        subjectSection.appendChild(testList);
+        subjectSection.appendChild(homeworkList);
+        taskListContainer.appendChild(subjectSection);
     }
 }
-
-function updateTestList(subject) {
-    const testDateList = document.getElementById("testDateList");
-    testDateList.innerHTML = "";
-
-    subjects[subject].tests.forEach((testDate) => {
-        const li = document.createElement("li");
-        li.textContent = testDate.toDateString();
-        testDateList.appendChild(li);
-    });
-}
-
-function updateHomeworkList(subject) {
-    const homeworkList = document.getElementById("homeworkList");
-    homeworkList.innerHTML = "";
-
-    subjects[subject].homework.forEach((homework) => {
-        const li = document.createElement("li");
-        li.textContent = `${homework.name} - ${homework.date.toDateString()}`;
-        homeworkList.appendChild(li);
-    });
-}
-
-document.getElementById("dateType").addEventListener("change", (event) => {
-    const homeworkNameField = document.getElementById("homeworkNameField");
-    if (event.target.value === "homework") {
-        homeworkNameField.style.display = "block";
-    } else {
-        homeworkNameField.style.display = "none";
-    }
-});
