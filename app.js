@@ -38,7 +38,12 @@ function addTask() {
     const selectedSubject = subjectSelect.value;
 
     if (selectedSubject && taskName !== '' && taskDate !== '') {
-        const task = { name: taskName, date: new Date(taskDate).toDateString(), rawDate: new Date(taskDate) };
+        const task = { 
+            name: taskName, 
+            date: new Date(taskDate).toDateString(), 
+            rawDate: new Date(taskDate),
+            id: Date.now() // Generate a unique ID for each task
+        };
 
         // Add the task to the appropriate subject (homework or test)
         if (taskType === 'homework') {
@@ -57,6 +62,22 @@ function addTask() {
     } else {
         alert('Please fill in all fields.');
     }
+}
+
+// Function to delete a task (homework/test) by its ID
+function deleteTask(subjectName, taskType, taskId) {
+    // Find the subject
+    const subject = subjects[subjectName];
+
+    // Remove the task from the appropriate list (homework or tests)
+    if (taskType === 'homework') {
+        subjects[subjectName].homework = subjects[subjectName].homework.filter(task => task.id !== taskId);
+    } else {
+        subjects[subjectName].tests = subjects[subjectName].tests.filter(task => task.id !== taskId);
+    }
+
+    // Re-render the task list after deletion
+    renderSubjectsList();
 }
 
 // Function to render the list of subjects with their tasks
@@ -91,6 +112,15 @@ function renderSubjectsList() {
                 }
 
                 li.textContent = `${task.name} - ${task.date}`;
+
+                // Add a delete button for each task
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.classList.add('delete-btn');
+                deleteButton.onclick = () => deleteTask(subject, 'homework', task.id);
+
+                // Append the delete button to the task
+                li.appendChild(deleteButton);
                 homeworkList.appendChild(li);
             });
             taskList.appendChild(homeworkList);
@@ -112,6 +142,15 @@ function renderSubjectsList() {
                 }
 
                 li.textContent = `${task.name} - ${task.date}`;
+
+                // Add a delete button for each task
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.classList.add('delete-btn');
+                deleteButton.onclick = () => deleteTask(subject, 'test', task.id);
+
+                // Append the delete button to the task
+                li.appendChild(deleteButton);
                 testList.appendChild(li);
             });
             taskList.appendChild(testList);
