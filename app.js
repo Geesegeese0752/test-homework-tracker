@@ -1,95 +1,60 @@
-let subjects = {};
-
+// Function to add a new subject to the subject list
 function addSubject() {
-    const newSubjectInput = document.getElementById("newSubject");
-    const subjectName = newSubjectInput.value.trim();
+    const subjectInput = document.getElementById('newSubject');
+    const subjectName = subjectInput.value.trim();
 
-    if (!subjectName) {
-        alert("Please enter a subject name.");
-        return;
-    }
-
-    if (subjects[subjectName]) {
-        alert("Subject already exists.");
-        return;
-    }
-
-    subjects[subjectName] = { tests: [], homework: [] };
-    newSubjectInput.value = "";
-    updateSubjectList();
-    renderTaskList();
-}
-
-function updateSubjectList() {
-    const subjectSelect = document.getElementById("subjectSelect");
-    subjectSelect.innerHTML = '<option value="">Select a subject</option>';
-
-    for (const subject in subjects) {
-        const option = document.createElement("option");
-        option.value = subject;
-        option.textContent = subject;
-        subjectSelect.appendChild(option);
-    }
-}
-
-function addTask() {
-    const selectedSubject = document.getElementById("subjectSelect").value;
-    const taskType = document.getElementById("taskType").value;
-    const taskName = document.getElementById("taskName").value.trim();
-    const taskDate = document.getElementById("taskDate").value;
-
-    if (!selectedSubject) {
-        alert("Please select a subject.");
-        return;
-    }
-
-    if (!taskName || !taskDate) {
-        alert("Please provide both task name and date.");
-        return;
-    }
-
-    const task = { name: taskName, date: new Date(taskDate).toDateString() };
-
-    if (taskType === "test") {
-        subjects[selectedSubject].tests.push(task);
+    if (subjectName !== '') {
+        // Create a new subject element in the subject list
+        const subjectSelect = document.getElementById('subjectSelect');
+        
+        // Create new option element for the subject
+        const newOption = document.createElement('option');
+        newOption.value = subjectName;
+        newOption.textContent = subjectName;
+        
+        // Append the new option to the dropdown
+        subjectSelect.appendChild(newOption);
+        
+        // Also update the subjects list below the form
+        const subjectsList = document.getElementById('subjectsList');
+        const subjectDiv = document.createElement('div');
+        subjectDiv.classList.add('subject');
+        subjectDiv.innerHTML = `
+            <h4>${subjectName}</h4>
+        `;
+        subjectsList.appendChild(subjectDiv);
+        
+        // Clear the input field after adding the subject
+        subjectInput.value = '';
     } else {
-        subjects[selectedSubject].homework.push(task);
+        alert('Please enter a subject name');
     }
-
-    renderTaskList();
-    alert(`Added ${taskType} to ${selectedSubject}.`);
 }
 
-function renderTaskList() {
-    const taskListContainer = document.getElementById("taskListContainer");
-    taskListContainer.innerHTML = "";
+// Function to add a task (homework/test)
+function addTask() {
+    const subjectSelect = document.getElementById('subjectSelect');
+    const taskName = document.getElementById('taskName').value.trim();
+    const taskDate = document.getElementById('taskDate').value;
+    const taskType = document.getElementById('taskType').value;
 
-    for (const subject in subjects) {
-        const subjectDiv = document.createElement("div");
-        subjectDiv.classList.add("subject");
+    if (subjectSelect.value && taskName !== '' && taskDate !== '') {
+        // Add task to the reminders section
+        const upcomingTasks = document.getElementById('upcomingTasks');
+        const taskItem = document.createElement('li');
+        taskItem.innerHTML = `
+            <strong>${taskName}</strong><br>
+            <em>Subject: ${subjectSelect.value}</em><br>
+            <em>Type: ${taskType}</em><br>
+            <em>Due Date: ${taskDate}</em>
+        `;
+        upcomingTasks.appendChild(taskItem);
 
-        const subjectHeader = document.createElement("h4");
-        subjectHeader.textContent = subject;
-        subjectDiv.appendChild(subjectHeader);
-
-        const testList = document.createElement("ul");
-        testList.innerHTML = "<strong>Tests:</strong>";
-        subjects[subject].tests.forEach((test) => {
-            const li = document.createElement("li");
-            li.textContent = `${test.name} - ${test.date}`;
-            testList.appendChild(li);
-        });
-
-        const homeworkList = document.createElement("ul");
-        homeworkList.innerHTML = "<strong>Homework:</strong>";
-        subjects[subject].homework.forEach((homework) => {
-            const li = document.createElement("li");
-            li.textContent = `${homework.name} - ${homework.date}`;
-            homeworkList.appendChild(li);
-        });
-
-        subjectDiv.appendChild(testList);
-        subjectDiv.appendChild(homeworkList);
-        taskListContainer.appendChild(subjectDiv);
+        // Clear the input fields after adding the task
+        document.getElementById('taskName').value = '';
+        document.getElementById('taskDate').value = '';
+        document.getElementById('taskType').value = 'homework';
+    } else {
+        alert('Please fill in all the fields.');
     }
 }
