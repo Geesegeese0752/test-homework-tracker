@@ -3,46 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Task Organizer</title>
+    <title>School Homework & Test Tracker</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>School Task Organizer</h1>
+    <div class="blackboard">
+        <h1>School Homework & Test Tracker</h1>
 
-    <section>
-        <h3>Add a New Subject</h3>
-        <input type="text" id="newSubject" placeholder="Enter subject name">
-        <button onclick="addSubject()">Add Subject</button>
-    </section>
+        <div class="form-section">
+            <h3>Add Subject</h3>
+            <input type="text" id="subjectInput" placeholder="Enter subject name">
+            <button onclick="addSubject()">Add Subject</button>
+        </div>
 
-    <section>
-        <h3>Select a Subject</h3>
-        <label for="subjectSelect">Subjects:</label>
-        <select id="subjectSelect">
-            <option value="">Select a subject</option>
-        </select>
-    </section>
+        <div class="form-section">
+            <h3>Add Homework or Test</h3>
+            <select id="subjectSelector">
+                <option value="">Select Subject</option>
+            </select>
+            <input type="text" id="taskName" placeholder="Task name (e.g., Chapter 5 Homework)">
+            <input type="date" id="taskDate">
+            <select id="taskType">
+                <option value="homework">Homework</option>
+                <option value="test">Test</option>
+            </select>
+            <button onclick="addTask()">Add Task</button>
+        </div>
 
-    <section>
-        <h3>Add Tasks for Selected Subject</h3>
-        <label for="taskType">Task Type:</label>
-        <select id="taskType">
-            <option value="test">Test</option>
-            <option value="homework">Homework</option>
-        </select>
-        <input type="text" id="taskName" placeholder="Task name">
-        <input type="date" id="taskDate">
-        <button onclick="addTask()">Add Task</button>
-    </section>
+        <div id="subjectsContainer">
+            <h2>Subjects Overview</h2>
+            <div id="subjectsList"></div>
+        </div>
 
-    <section>
-        <h3>Organized Task List</h3>
-        <div id="taskListContainer"></div>
-    </section>
-
-    <footer>
-        <p>Keep track of your schoolwork efficiently!</p>
-    </footer>
+        <div id="reminders">
+            <h2>Upcoming Tasks</h2>
+            <ul id="upcomingTasks"></ul>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>
