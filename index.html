@@ -27,19 +27,25 @@
         <h3>Manage Dates for Selected Subject</h3>
         <label for="dateType">Choose Date Type:</label>
         <select id="dateType">
-            <option value="test">Test Date</option>
-            <option value="homework">Homework Date</option>
+            <option value="test">Test</option>
+            <option value="homework">Homework</option>
         </select>
+
+        <div id="homeworkNameField" style="display: none;">
+            <input type="text" id="homeworkName" placeholder="Enter homework name">
+        </div>
+
         <input type="date" id="dateInput">
         <button onclick="addDate()">Add Date</button>
-
-        <h4>Recorded Dates:</h4>
-        <ul id="dateList"></ul>
     </section>
 
     <section>
-        <h3>Predicted Next Test Date</h3>
-        <p id="predictedTestDate">Not enough data to predict.</p>
+        <h3>Details for Selected Subject</h3>
+        <h4>Test Dates:</h4>
+        <ul id="testDateList"></ul>
+
+        <h4>Homework:</h4>
+        <ul id="homeworkList"></ul>
     </section>
 
     <footer>
