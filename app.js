@@ -1,4 +1,4 @@
-let subjects = {}; // Object to hold subjects with their tasks
+let subjects = {}; // Object to store subjects with their homework and tests
 
 // Function to add a new subject to the subject list
 function addSubject() {
@@ -7,28 +7,30 @@ function addSubject() {
 
     if (subjectName !== '') {
         if (!subjects[subjectName]) {
-            // Initialize the subject with empty arrays for tests and homework
-            subjects[subjectName] = { tests: [], homework: [] };
+            // Initialize the subject with empty arrays for homework and tests
+            subjects[subjectName] = { homework: [], tests: [] };
             
-            // Update the subject dropdown
+            // Update the subject dropdown (select)
             const subjectSelect = document.getElementById('subjectSelector');
             const newOption = document.createElement('option');
             newOption.value = subjectName;
             newOption.textContent = subjectName;
             subjectSelect.appendChild(newOption);
 
-            // Update the subjects list with the new subject
+            // Clear the input field
+            subjectInput.value = '';
+
+            // Update the subject overview list
             renderSubjectsList();
-            subjectInput.value = ''; // Clear the input
         } else {
-            alert('Subject already exists.');
+            alert('This subject already exists.');
         }
     } else {
-        alert('Please enter a subject name');
+        alert('Please enter a subject name.');
     }
 }
 
-// Function to add a task (homework/test) to the selected subject
+// Function to add a homework or test task to the selected subject
 function addTask() {
     const subjectSelect = document.getElementById('subjectSelector');
     const taskName = document.getElementById('taskName').value.trim();
@@ -47,22 +49,22 @@ function addTask() {
             subjects[selectedSubject].tests.push(task);
         }
 
-        // Update the subject's task list and render the overview
-        renderSubjectsList();
-
         // Clear the input fields
         document.getElementById('taskName').value = '';
         document.getElementById('taskDate').value = '';
         document.getElementById('taskType').value = 'homework';
+
+        // Update the subject overview list
+        renderSubjectsList();
     } else {
         alert('Please fill in all fields.');
     }
 }
 
-// Function to render the list of subjects with their tasks
+// Function to render the list of subjects with their tasks (homework and tests)
 function renderSubjectsList() {
     const subjectsListContainer = document.getElementById('subjectsList');
-    subjectsListContainer.innerHTML = ''; // Clear existing list
+    subjectsListContainer.innerHTML = ''; // Clear the current list
 
     // Loop through each subject and display their homework and tests
     for (const subject in subjects) {
